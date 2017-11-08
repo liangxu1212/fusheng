@@ -13,7 +13,7 @@ public class MyJSON extends JSONObject{
     public void setStatus(String status){
         this.put("status",status);
     }
-    public void putData(String key,String data){
+    public void putData(String key,Object data){
         this.data.put(key,data);
     }
     public void putData(String jsonString){

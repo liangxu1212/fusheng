@@ -48,7 +48,7 @@ public class UserController {
             writer.flush();
             return;
         }
-
+        JSONObject object=new JSONObject();
         request.getSession().setAttribute("user", user);
         myJSON.setStatus("200");
         myJSON.putData("account", user.getAccount());

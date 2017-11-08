@@ -3,29 +3,31 @@ package diary.util;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Created by MSI on 2017/11/4.
  */
 public class TestPython {
     public static void main(String args[])
     {
+        String shell = "cmd /c start python d:\\fusheng\\test\\deploy_interface.py d:\\fusheng\\pics";//需要执行的命令
+//        String arg="d:\\fusheng\\pics";
+//        String cmd="python";
+//        String file="d:\\fusheng\\test\\deploy_interface.py";
+//        String[] shell=new String[]{
+//                cmd,file,arg
+//        };
+        try {
+            File f=new File("result.txt");
+            f.delete();
+            f.createNewFile();
+            Process p = Runtime.getRuntime().exec(shell);//调用控制台执行shell
+        } catch (Exception e) {
+        }
+    }
+}//main
 
-//        PythonInterpreter interpreter = new PythonInterpreter();
-//        interpreter.exec("days=('mod','Tue','Wed','Thu','Fri','Sat','Sun'); ");
-//        interpreter.exec("print days[1];");
-        PythonInterpreter interpreter = new PythonInterpreter();
-        PySystemState sys = Py.getSystemState();
-        sys.path.add("D:\\Python\\Python36\\Lib\\site-packages\\numpy");
-        interpreter.exec("import sys");
-        interpreter.exec("print(sys.path)");
-        interpreter.execfile("./deploy_interface.py");
-        PyFunction func = (PyFunction)interpreter.get("init",PyFunction.class);
-        PyFunction func2 = (PyFunction)interpreter.get("processWCE",PyFunction.class);
-
-
-        PyObject pyobj = func.__call__();
-        PyObject pyobj2=func2.__call__(new PyString("d:/fusheng/test.jpg"));
-        System.out.println("anwser = " + pyobj2.toString());
-
-    }//main
-}
