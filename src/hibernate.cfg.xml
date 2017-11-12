@@ -16,6 +16,7 @@
         <!-- 指定自动生成数据表的策略 -->
         <property name="hbm2ddl.auto">update</property>
         <mapping class="diary.bean.User"></mapping>
+        <mapping class="diary.bean.Images"></mapping>
 
         <!-- DB schema will be updated if needed -->
         <!-- <property name="hbm2ddl.auto">update</property> -->
