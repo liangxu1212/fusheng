@@ -47,4 +47,5 @@
     <!--<bean id="UserService" class="diary.service.UserService"></bean>
     <bean id="NewsService" class="diary.service.NewsService"></bean>-->
     <bean id="UserDAO" class="diary.dao.UserDao"></bean>
+    <bean id="ImageDAO" class="diary.dao.ImageDao"></bean>
 </beans>

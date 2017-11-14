@@ -16,6 +16,15 @@ public class Images {
     private String tumourResult;
     private String theriomaResult;
 
+    public Images(String imageUrl, String tumourUrl, String fatUrl, String ultrasonicResult, String tumourResult, String theriomaResult) {
+        this.imageUrl = imageUrl;
+        this.tumourUrl = tumourUrl;
+        this.fatUrl = fatUrl;
+        this.ultrasonicResult = ultrasonicResult;
+        this.tumourResult = tumourResult;
+        this.theriomaResult = theriomaResult;
+    }
+
     @Id
     @Column(name = "id")
     public int getId() {
