@@ -33,13 +33,20 @@ public class ImageDao {
         this.getSession().saveOrUpdate(images);
     }
     public void deleteAll(){
-        String hql="delete from images where 1=1";
+        String hql="delete from Images where 1=1";
         Query q=getSession().createQuery(hql);
         q.executeUpdate();
     }
     public Images findImageByUrl(String url){
-        String hql="from images where imageUrl="+url;
+        String hql="from Images where imageUrl='"+url+"'";
         Query q=getSession().createQuery(hql);
         return (Images) q.uniqueResult();
+    }
+    public void updateImage(Images images){
+        String hql="update Images i set tumourUrl='"+images.getTumourUrl()+"',fatUrl='"+images.getFatUrl()+"'," +
+                "ultrasonicResult='"+images.getUltrasonicResult()+"',tumourResult='"+images.getTumourResult()+"'," +
+                "theriomaResult='"+images.getTheriomaResult()+"' where imageUrl='"+images.getImageUrl()+"'";
+        Query q=getSession().createQuery(hql);
+        q.executeUpdate();
     }
 }

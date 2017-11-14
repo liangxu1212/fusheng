@@ -16,6 +16,19 @@ public class Images {
     private String tumourResult;
     private String theriomaResult;
 
+    public Images() {
+    }
+
+    public Images(int id, String imageUrl, String tumourUrl, String fatUrl, String ultrasonicResult, String tumourResult, String theriomaResult) {
+        this.id = id;
+        this.imageUrl = imageUrl;
+        this.tumourUrl = tumourUrl;
+        this.fatUrl = fatUrl;
+        this.ultrasonicResult = ultrasonicResult;
+        this.tumourResult = tumourResult;
+        this.theriomaResult = theriomaResult;
+    }
+
     public Images(String imageUrl, String tumourUrl, String fatUrl, String ultrasonicResult, String tumourResult, String theriomaResult) {
         this.imageUrl = imageUrl;
         this.tumourUrl = tumourUrl;

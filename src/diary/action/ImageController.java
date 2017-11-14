@@ -27,16 +27,16 @@ public class ImageController {
     public void setImageDao(ImageDao imageDao){this.imageDao=imageDao;}
 
 
-    @RequestMapping(params = "method=clean",method = RequestMethod.POST)
+    @RequestMapping(value="/clean",method = RequestMethod.POST)
     public void clean (HttpServletRequest request,HttpServletResponse response) throws IOException {
         imageDao.deleteAll();
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("result","ok");
+        jsonObject.put("status",200);
         PrintWriter writer=response.getWriter();
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
-    @RequestMapping(params = "method=addImage",method=RequestMethod.POST)
+    @RequestMapping(value="/addImage",method=RequestMethod.POST)
     public void addImage(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String imageUrl=request.getParameter("image_url");
         String tumourUrl=request.getParameter("tumour_url");
@@ -46,7 +46,8 @@ public class ImageController {
         String theriomaResult=request.getParameter("therioma_result");
         PrintWriter writer=response.getWriter();
         JSONObject jsonObject=new JSONObject();
-        if(imageUrl==null||tumourUrl==null||fatUrl==null||ultrasonicResult==null||tumourResult==null||theriomaResult==null){
+        Images origin=imageDao.findImageByUrl(imageUrl);
+        if(origin!=null||imageUrl==null||tumourUrl==null||fatUrl==null||ultrasonicResult==null||tumourResult==null||theriomaResult==null){
             jsonObject.put("status",400);
             writer.write(jsonObject.toJSONString());
             writer.flush();
@@ -58,7 +59,7 @@ public class ImageController {
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
-    @RequestMapping(params = "method=updateImage",method=RequestMethod.POST)
+    @RequestMapping(value="/updateImage",method=RequestMethod.POST)
     public void updateImage(HttpServletRequest request, HttpServletResponse response) throws IOException{
         String imageUrl=request.getParameter("image_url");
         String tumourUrl=request.getParameter("tumour_url");
@@ -68,6 +69,7 @@ public class ImageController {
         String theriomaResult=request.getParameter("therioma_result");
         PrintWriter writer=response.getWriter();
         JSONObject jsonObject=new JSONObject();
+        Images origin=imageDao.findImageByUrl(imageUrl);
         if(imageUrl==null||tumourUrl==null||fatUrl==null||ultrasonicResult==null||tumourResult==null||theriomaResult==null){
             jsonObject.put("status",400);
             writer.write(jsonObject.toJSONString());
@@ -75,12 +77,19 @@ public class ImageController {
             return;
         }
         Images images=new Images(imageUrl,tumourUrl,fatUrl,ultrasonicResult,tumourResult,theriomaResult);
-        imageDao.updateImages(images);
+        if(origin==null){
+            imageDao.updateImages(images);
+            jsonObject.put("existed",0);
+        }else{
+            imageDao.updateImage(images);
+            jsonObject.put("existed",1);
+        }
+
         jsonObject.put("status",200);
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
-    @RequestMapping(params = "method=queryImage",method = RequestMethod.POST)
+    @RequestMapping(value="/queryImage",method = RequestMethod.POST)
     public void queryImage(HttpServletRequest request,HttpServletResponse response) throws IOException {
         String imageUrl=request.getParameter("image_url");
         PrintWriter writer=response.getWriter();
@@ -104,11 +113,8 @@ public class ImageController {
             writer.flush();
         }
 
-        writer.write(jsonObject.toJSONString());
-        writer.flush();
-
     }
-    @RequestMapping(params = "method=listen" ,method= RequestMethod.POST)
+    @RequestMapping(value="/listen",method= RequestMethod.POST)
     public void listen(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String shell = "cmd /c start E:\\sota\\Diary\\FolderListener.exe";
         try {
@@ -117,12 +123,12 @@ public class ImageController {
             e.printStackTrace();
         }
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("result","ok");
+        jsonObject.put("status",200);
         PrintWriter writer=response.getWriter();
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
-    @RequestMapping(params = "method=stopListen",method=RequestMethod.POST)
+    @RequestMapping(value="/stopListen",method=RequestMethod.POST)
     public void stop(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String shell = "cmd /c start taskkill /f /t /im FolderListener.exe";
@@ -132,7 +138,7 @@ public class ImageController {
             e.printStackTrace();
         }
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("result","ok");
+        jsonObject.put("status",200);
         PrintWriter writer=response.getWriter();
         writer.write(jsonObject.toJSONString());
         writer.flush();
