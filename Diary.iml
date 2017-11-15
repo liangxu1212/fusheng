@@ -49,5 +49,7 @@
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="library" name="gson-2.2.4" level="project" />
     <orderEntry type="library" name="jython" level="project" />
+    <orderEntry type="library" name="javabuilder" level="project" />
+    <orderEntry type="library" name="MY_ULTRASONIC" level="project" />
   </component>
 </module>
