@@ -1,7 +1,12 @@
 package diary.action;
 
+import MY_ULTRASONIC.Ultrasonic;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.mathworks.toolbox.javabuilder.MWArray;
+import com.mathworks.toolbox.javabuilder.MWCharArray;
+import com.mathworks.toolbox.javabuilder.MWClassID;
+import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import diary.bean.Images;
 import diary.dao.ImageDao;
 import org.python.antlr.ast.Print;
@@ -13,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -143,4 +149,40 @@ public class ImageController {
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
+    @RequestMapping(value = "/test")
+    public void test(){
+        diary.util.Ultrasonic.ultrasonic("d:/fusheng/GUI/PICimg/002","164",
+                "203","203","250","508","472","573","519",
+                "518","620","94","133");
+    }
+    @RequestMapping(value="/ultrasonic",method=RequestMethod.POST)
+    public void ultrasonic(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        PrintWriter writer=response.getWriter();
+        String imagePath=request.getParameter("image_path");
+        String x1=request.getParameter("x1");String x2=request.getParameter("x2");
+        String x3=request.getParameter("x3");String x4=request.getParameter("x4");
+        String y1=request.getParameter("y1");String y2=request.getParameter("y2");
+        String y3=request.getParameter("y3");String y4=request.getParameter("y4");
+        String xf1=request.getParameter("xf1");String xf2=request.getParameter("xf2");
+        String yf1=request.getParameter("yf1");String yf2=request.getParameter("yf2");
+        JSONObject jsonObject=new JSONObject();
+        if(imagePath==null||imagePath==""||x1==null||x1==""||x2==null||x2==""||x3==null||x3==""||x4==null||x4==""
+                ||y1==null||y1==""||y2==null||y2==""||y3==null||y3==""||y4==null||y4==""
+                ||xf1==null||xf1==""||xf2==null||xf2==""||yf1==null||yf1==""||yf2==null||yf2==""){
+            jsonObject.put("status",400);
+            writer.write((jsonObject.toJSONString()));
+            writer.flush();
+            return;
+        }
+        jsonObject.put("status",200);
+        Object[] result= diary.util.Ultrasonic.ultrasonic(imagePath,x1,x2,x3,x4,y1,y2,y3,y4,xf1,xf2,yf1,yf2);
+        String[] temp=imagePath.split("/");
+        jsonObject.put("auto_seg",new File("").getAbsolutePath()+"/finalimg/seg-"+temp[temp.length-1]);
+        jsonObject.put("ultrasonic_result",result[0].toString());
+        jsonObject.put("tumour_result",result[1].toString());
+        jsonObject.put("therioma_result",result[2].toString());
+        writer.write(jsonObject.toJSONString());
+        writer.flush();
+    }
+
 }
