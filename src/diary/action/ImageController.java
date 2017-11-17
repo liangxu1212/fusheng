@@ -149,12 +149,6 @@ public class ImageController {
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
-    @RequestMapping(value = "/test")
-    public void test(){
-        diary.util.Ultrasonic.ultrasonic("d:/fusheng/GUI/PICimg/002","164",
-                "203","203","250","508","472","573","519",
-                "518","620","94","133");
-    }
     @RequestMapping(value="/ultrasonic",method=RequestMethod.POST)
     public void ultrasonic(HttpServletRequest request,HttpServletResponse response) throws IOException {
         PrintWriter writer=response.getWriter();
@@ -174,10 +168,12 @@ public class ImageController {
             writer.flush();
             return;
         }
+        File f=new File(imagePath);
+        String name=f.getName();
         jsonObject.put("status",200);
-        Object[] result= diary.util.Ultrasonic.ultrasonic(imagePath,x1,x2,x3,x4,y1,y2,y3,y4,xf1,xf2,yf1,yf2);
-        String[] temp=imagePath.split("/");
-        jsonObject.put("auto_seg",new File("").getAbsolutePath()+"/finalimg/seg-"+temp[temp.length-1]);
+        Object[] result= diary.util.Ultrasonic.ultrasonic(imagePath,name,x1,x2,x3,x4,y1,y2,y3,y4,xf1,xf2,yf1,yf2);
+        jsonObject.put("auto_seg",new File("").getAbsolutePath()+"\\finalimg\\seg-"+name+".jpg");
+        jsonObject.put("fat",new File("").getAbsolutePath()+"\\finalimg\\fat-"+name+".jpg");
         jsonObject.put("ultrasonic_result",result[0].toString());
         jsonObject.put("tumour_result",result[1].toString());
         jsonObject.put("therioma_result",result[2].toString());

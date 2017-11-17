@@ -10,7 +10,7 @@ import com.mathworks.toolbox.javabuilder.*;
 public class TestPython {
     public static void main(String[] args) throws Exception{
 // TODO Auto-generated method stub
-        diary.util.Ultrasonic.ultrasonic("d:/fusheng/GUI/PICimg/002","164",
+        diary.util.Ultrasonic.ultrasonic("d:/fusheng/GUI/PICimg/002","002","164",
                 "203","203","250","508","472","573","519",
                 "518","620","94","133");
 //        MWNumericArray a = null;MWNumericArray m = null;MWNumericArray n = null;MWNumericArray p = null;MWNumericArray q = null;
