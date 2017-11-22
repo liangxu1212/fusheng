@@ -1,15 +1,11 @@
 package diary.action;
 
 import MY_ULTRASONIC.Ultrasonic;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mathworks.toolbox.javabuilder.MWArray;
-import com.mathworks.toolbox.javabuilder.MWCharArray;
-import com.mathworks.toolbox.javabuilder.MWClassID;
-import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import diary.bean.Images;
 import diary.dao.ImageDao;
-import org.python.antlr.ast.Print;
+import diary.util.UltrasonicUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -149,6 +144,24 @@ public class ImageController {
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
+    @RequestMapping(value="/checkListen",method=RequestMethod.POST)
+    public void checkListen(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        PrintWriter writer=response.getWriter();
+        File f=new File("d:\\target\\flag");
+        JSONObject jsonObject=new JSONObject();
+        if(f.exists()){
+            f.delete();
+            JSONArray array=UltrasonicUtil.dcm2jpg();
+            jsonObject.put("status",200);
+            jsonObject.put("data",array);
+            writer.write(jsonObject.toJSONString());
+            writer.flush();
+            return;
+        }
+        jsonObject.put("status",400);
+        writer.write(jsonObject.toJSONString());
+        writer.flush();
+    }
     @RequestMapping(value="/ultrasonic",method=RequestMethod.POST)
     public void ultrasonic(HttpServletRequest request,HttpServletResponse response) throws IOException {
         PrintWriter writer=response.getWriter();
@@ -171,7 +184,7 @@ public class ImageController {
         File f=new File(imagePath);
         String name=f.getName();
         jsonObject.put("status",200);
-        Object[] result= diary.util.Ultrasonic.ultrasonic(imagePath,name,x1,x2,x3,x4,y1,y2,y3,y4,xf1,xf2,yf1,yf2);
+        Object[] result= UltrasonicUtil.ultrasonic(imagePath,name,x1,x2,x3,x4,y1,y2,y3,y4,xf1,xf2,yf1,yf2);
         jsonObject.put("auto_seg",new File("").getAbsolutePath()+"\\finalimg\\seg-"+name+".jpg");
         jsonObject.put("fat",new File("").getAbsolutePath()+"\\finalimg\\fat-"+name+".jpg");
         jsonObject.put("ultrasonic_result",result[0].toString());

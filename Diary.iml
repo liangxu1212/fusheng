@@ -48,8 +48,8 @@
     <orderEntry type="library" name="Hibernate-4.2.2" level="project" />
     <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
     <orderEntry type="library" name="gson-2.2.4" level="project" />
-    <orderEntry type="library" name="jython" level="project" />
     <orderEntry type="library" name="javabuilder" level="project" />
     <orderEntry type="library" name="MY_ULTRASONIC" level="project" />
+    <orderEntry type="library" name="dicom2jpg" level="project" />
   </component>
 </module>

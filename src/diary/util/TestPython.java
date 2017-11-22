@@ -4,20 +4,26 @@ package diary.util;
 import MY_ULTRASONIC.Ultrasonic;
 import com.mathworks.toolbox.javabuilder.*;
 
+import java.io.File;
+
 /**
  * Created by MSI on 2017/11/4.
  */
 public class TestPython {
     public static void main(String[] args) throws Exception{
 // TODO Auto-generated method stub
-        diary.util.Ultrasonic.ultrasonic("d:/fusheng/GUI/PICimg/002","002","164",
-                "203","203","250","508","472","573","519",
-                "518","620","94","133");
+//        diary.util.UltrasonicUtil.ultrasonic("d:/fusheng/GUI/PICimg/002","002","164",
+//                "203","203","250","508","472","573","519",
+//                "518","620","94","133");
+        File f=new File("d:\\fusheng\\GUI\\PICimg\\001");
+        System.out.println(f.getName());
+        System.out.println(f.getParent());
+        System.out.println(f.getPath());
 //        MWNumericArray a = null;MWNumericArray m = null;MWNumericArray n = null;MWNumericArray p = null;MWNumericArray q = null;
 //        MWNumericArray b = null;
 //        MWCharArray c = null;
 //        Object[] result= null;
-//        Ultrasonic ultrasonic=null;
+//        UltrasonicUtil ultrasonic=null;
 //        try{
 //            double[] aaa={164,203,203,250};
 //            double[] bbb={508,472,573,519};
@@ -31,7 +37,7 @@ public class TestPython {
 //            p=new MWNumericArray(Double.valueOf("94"),MWClassID.DOUBLE);
 //            q=new MWNumericArray(Double.valueOf("133"),MWClassID.DOUBLE);
 //            c=new MWCharArray("d:\\fusheng\\GUI\\PICimg\\002");
-//            ultrasonic=new Ultrasonic();
+//            ultrasonic=new UltrasonicUtil();
 //            result=ultrasonic.MY_ULTRASONIC(3,c,a,b,m,n,p,q);
 //            System.out.println(result[0]);
 //            System.out.println(result[1]);
