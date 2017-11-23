@@ -1,5 +1,6 @@
 package diary.util;
 
+import MY_MAIN_LFPA.AutoSeg;
 import com.alibaba.fastjson.JSONArray;
 import com.mathworks.toolbox.javabuilder.MWCharArray;
 import com.mathworks.toolbox.javabuilder.MWClassID;
@@ -130,5 +131,39 @@ public class UltrasonicUtil {
         copyFile(oldPath,  newPath);
         delFile(oldPath);
 
+    }
+
+    public static String autoseg(String imagePath, String name, String x1, String x2, String x3, String x4, String y1, String y2, String y3, String y4) {
+        String str="";
+        MWNumericArray a = null;
+        MWNumericArray b = null;
+        MWCharArray c = null;MWCharArray c2 = null;
+        Object[] result= null;
+        AutoSeg autoSeg=null;
+        try{
+            double[] aaa={Double.valueOf(x1),Double.valueOf(x2),Double.valueOf(x3),Double.valueOf(x4)};
+            double[] bbb={Double.valueOf(y1),Double.valueOf(y2),Double.valueOf(y3),Double.valueOf(y4)};
+
+            a = new MWNumericArray(aaa, MWClassID.DOUBLE);
+            b = new MWNumericArray(bbb, MWClassID.DOUBLE);
+            c = new MWCharArray(imagePath);
+            c2=new MWCharArray(name);
+            autoSeg=new AutoSeg();
+            result=autoSeg.MY_MAIN_LFPA(4,c,c2,a,b);
+            System.out.println(result[3]);
+            File f=new File(result[3].toString());
+            str="imageResults/"+f.getName();
+            File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
+            File move=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
+            File[] files=origin.listFiles();
+            for(File img:files){
+                moveFile(img.getAbsolutePath(),move.getAbsolutePath()+"\\"+img.getName());
+            }
+        }catch (Exception e) {
+// TODO: handle exception
+            System.out.println("Exception! "+e.toString());
+            e.printStackTrace();
+        }
+        return str;
     }
 }

@@ -186,5 +186,30 @@ public class ImageController {
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
+    @RequestMapping(value="/autoseg",method=RequestMethod.POST)
+    public void autoseg(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        PrintWriter writer=response.getWriter();
+        String imagePath=request.getParameter("image_path");
+        String x1=request.getParameter("x1");String x2=request.getParameter("x2");
+        String x3=request.getParameter("x3");String x4=request.getParameter("x4");
+        String y1=request.getParameter("y1");String y2=request.getParameter("y2");
+        String y3=request.getParameter("y3");String y4=request.getParameter("y4");
+        JSONObject jsonObject=new JSONObject();
+        if(imagePath==null||imagePath==""||x1==null||x1==""||x2==null||x2==""||x3==null||x3==""||x4==null||x4==""
+                ||y1==null||y1==""||y2==null||y2==""||y3==null||y3==""||y4==null||y4==""){
+            jsonObject.put("status",400);
+            writer.write((jsonObject.toJSONString()));
+            writer.flush();
+            return;
+        }
+        imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
+        File f=new File(imagePath);
+        String name=f.getName();
+        jsonObject.put("status",200);
+        String result= UltrasonicUtil.autoseg(imagePath,name,x1,x2,x3,x4,y1,y2,y3,y4);
+        jsonObject.put("auto_seg",result);
+        writer.write(jsonObject.toJSONString());
+        writer.flush();
+    }
 
 }
