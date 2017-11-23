@@ -37,6 +37,7 @@ public class UltrasonicUtil {
             System.out.println(result[0]);
             System.out.println(result[1]);
             System.out.println(result[2]);
+            File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
 
         }catch (Exception e) {
 // TODO: handle exception
@@ -53,7 +54,7 @@ public class UltrasonicUtil {
         } catch (MWException e) {
             e.printStackTrace();
         }
-        File path=new File("d:\\target");
+        File path=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage");
         File[] pics=path.listFiles();
         for(File img:pics){
             if(img.getName().endsWith(".dcm")){
@@ -64,7 +65,7 @@ public class UltrasonicUtil {
                 } catch (MWException e) {
                     e.printStackTrace();
                 }
-                array.add(img.getParent()+"\\jpg-"+img.getName()+".jpg");
+                array.add("jpg-"+img.getName()+".jpg");
             }
 
         }

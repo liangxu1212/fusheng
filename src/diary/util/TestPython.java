@@ -15,10 +15,10 @@ public class TestPython {
 //        diary.util.UltrasonicUtil.ultrasonic("d:/fusheng/GUI/PICimg/002","002","164",
 //                "203","203","250","508","472","573","519",
 //                "518","620","94","133");
-        File f=new File("d:\\fusheng\\GUI\\PICimg\\001");
-        System.out.println(f.getName());
-        System.out.println(f.getParent());
-        System.out.println(f.getPath());
+        File f=new File("d:\\fusheng\\GUI\\PICimg3\\001");
+        File p=new File(f.getParent());
+        p.mkdirs();
+        f.createNewFile();
 //        MWNumericArray a = null;MWNumericArray m = null;MWNumericArray n = null;MWNumericArray p = null;MWNumericArray q = null;
 //        MWNumericArray b = null;
 //        MWCharArray c = null;

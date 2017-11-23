@@ -117,7 +117,7 @@ public class ImageController {
     }
     @RequestMapping(value="/listen",method= RequestMethod.POST)
     public void listen(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String shell = "cmd /c start E:\\sota\\Diary\\FolderListener.exe";
+        String shell = "cmd /c start D:\\apache-tomcat-7.0.75-sota\\webapps\\backend\\FolderListener.exe";
         try {
             Process p=Runtime.getRuntime().exec(shell);
         } catch (IOException e) {
@@ -147,7 +147,7 @@ public class ImageController {
     @RequestMapping(value="/checkListen",method=RequestMethod.POST)
     public void checkListen(HttpServletRequest request,HttpServletResponse response) throws IOException {
         PrintWriter writer=response.getWriter();
-        File f=new File("d:\\target\\flag");
+        File f=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage\\flag");
         JSONObject jsonObject=new JSONObject();
         if(f.exists()){
             f.delete();
