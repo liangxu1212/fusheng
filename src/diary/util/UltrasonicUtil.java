@@ -54,20 +54,13 @@ public class UltrasonicUtil {
         } catch (MWException e) {
             e.printStackTrace();
         }
-        File path=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage");
+        String storage="D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage";
+        File path=new File(storage);
         File[] pics=path.listFiles();
         for(File img:pics){
-            if(img.getName().endsWith(".dcm")){
-                MWCharArray pathName=new MWCharArray(img.getParent());
-                MWCharArray imgName=new MWCharArray(img.getName());
-                try {
-                    dcm2jpg.dicom2jpg(pathName,imgName);
-                } catch (MWException e) {
-                    e.printStackTrace();
-                }
-                array.add("jpg-"+img.getName()+".jpg");
+            if(img.getName().endsWith(".jpg")){
+                array.add(img.getName());
             }
-
         }
         return  array;
     }

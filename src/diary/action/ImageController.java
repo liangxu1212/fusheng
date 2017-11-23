@@ -147,18 +147,10 @@ public class ImageController {
     @RequestMapping(value="/checkListen",method=RequestMethod.POST)
     public void checkListen(HttpServletRequest request,HttpServletResponse response) throws IOException {
         PrintWriter writer=response.getWriter();
-        File f=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage\\flag");
         JSONObject jsonObject=new JSONObject();
-        if(f.exists()){
-            f.delete();
-            JSONArray array=UltrasonicUtil.dcm2jpg();
-            jsonObject.put("status",200);
-            jsonObject.put("data",array);
-            writer.write(jsonObject.toJSONString());
-            writer.flush();
-            return;
-        }
-        jsonObject.put("status",400);
+        JSONArray array=UltrasonicUtil.dcm2jpg();
+        jsonObject.put("status",200);
+        jsonObject.put("data",array);
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
