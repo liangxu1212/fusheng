@@ -14,11 +14,14 @@ public class TestPython {
 // TODO Auto-generated method stub
 //        diary.util.UltrasonicUtil.ultrasonic("d:/fusheng/GUI/PICimg/002","002","164",
 //                "203","203","250","508","472","573","519",
-//                "518","620","94","133");
-        File f=new File("d:\\fusheng\\GUI\\PICimg3\\001");
-        File p=new File(f.getParent());
-        p.mkdirs();
-        f.createNewFile();
+//
+//        "518","620","94","133");
+            String imagePath="imageStorage/jpg-002.jpg";
+            System.out.println(imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4));
+//        File f=new File("d:\\fusheng\\GUI\\PICimg3\\001");
+//        File p=new File(f.getParent());
+//        p.mkdirs();
+//        f.createNewFile();
 //        MWNumericArray a = null;MWNumericArray m = null;MWNumericArray n = null;MWNumericArray p = null;MWNumericArray q = null;
 //        MWNumericArray b = null;
 //        MWCharArray c = null;

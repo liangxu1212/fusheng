@@ -173,12 +173,13 @@ public class ImageController {
             writer.flush();
             return;
         }
+        imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
         File f=new File(imagePath);
         String name=f.getName();
         jsonObject.put("status",200);
         Object[] result= UltrasonicUtil.ultrasonic(imagePath,name,x1,x2,x3,x4,y1,y2,y3,y4,xf1,xf2,yf1,yf2);
-        jsonObject.put("auto_seg",new File("").getAbsolutePath()+"\\finalimg\\seg-"+name+".jpg");
-        jsonObject.put("fat",new File("").getAbsolutePath()+"\\finalimg\\fat-"+name+".jpg");
+        jsonObject.put("auto_seg","imageResults/seg-"+name+".jpg");
+        jsonObject.put("fat","imageResults/fat-"+name+".jpg");
         jsonObject.put("ultrasonic_result",result[0].toString());
         jsonObject.put("tumour_result",result[1].toString());
         jsonObject.put("therioma_result",result[2].toString());
