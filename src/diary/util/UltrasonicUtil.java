@@ -1,5 +1,6 @@
 package diary.util;
 
+import FAT.Fat;
 import MY_MAIN_LFPA.AutoSeg;
 import com.alibaba.fastjson.JSONArray;
 import com.mathworks.toolbox.javabuilder.MWCharArray;
@@ -56,12 +57,6 @@ public class UltrasonicUtil {
     }
     public static JSONArray dcm2jpg() {
         JSONArray array=new JSONArray();
-        Dcm2jpg dcm2jpg= null;
-        try {
-            dcm2jpg = new Dcm2jpg();
-        } catch (MWException e) {
-            e.printStackTrace();
-        }
         String storage="D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage";
         File path=new File(storage);
         File[] pics=path.listFiles();
@@ -71,6 +66,23 @@ public class UltrasonicUtil {
             }
         }
         return  array;
+    }
+    public static void newpic(String imagePath){
+        JSONArray array=new JSONArray();
+        Dcm2jpg dcm2jpg= null;
+        try {
+            dcm2jpg = new Dcm2jpg();
+        } catch (MWException e) {
+            e.printStackTrace();
+        }
+        File f2=new File(imagePath);
+        MWCharArray c=new MWCharArray(f2.getParent());
+        MWCharArray c2=new MWCharArray(f2.getName());
+        try {
+            dcm2jpg.dicom2jpg(c,c2);
+        } catch (MWException e) {
+            e.printStackTrace();
+        }
     }
     /**
      *  删除文件
@@ -143,7 +155,9 @@ public class UltrasonicUtil {
         try{
             double[] aaa={Double.valueOf(x1),Double.valueOf(x2),Double.valueOf(x3),Double.valueOf(x4)};
             double[] bbb={Double.valueOf(y1),Double.valueOf(y2),Double.valueOf(y3),Double.valueOf(y4)};
-
+            for(double d :aaa)System.out.println(d);
+            System.out.println(imagePath);
+            System.out.println(name);
             a = new MWNumericArray(aaa, MWClassID.DOUBLE);
             b = new MWNumericArray(bbb, MWClassID.DOUBLE);
             c = new MWCharArray(imagePath);
@@ -152,6 +166,41 @@ public class UltrasonicUtil {
             result=autoSeg.MY_MAIN_LFPA(4,c,c2,a,b);
             System.out.println(result[3]);
             File f=new File(result[3].toString());
+            str="imageResults/"+f.getName();
+            File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
+            File move=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
+            File[] files=origin.listFiles();
+            for(File img:files){
+                moveFile(img.getAbsolutePath(),move.getAbsolutePath()+"\\"+img.getName());
+            }
+        }catch (Exception e) {
+// TODO: handle exception
+            System.out.println("Exception! "+e.toString());
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String fatseg(String imagePath, String name, String xf1, String xf2, String yf1, String yf2) {
+        String str="";
+        MWNumericArray xl = null;
+        MWNumericArray xr = null;
+        MWNumericArray yt = null;
+        MWNumericArray yb = null;
+        MWCharArray c = null;MWCharArray c2 = null;
+        Object[] result= null;
+        Fat fat=null;
+        try{
+            xl= new MWNumericArray(Double.valueOf(xf1),MWClassID.DOUBLE);
+            xr=new MWNumericArray(Double.valueOf(xf2),MWClassID.DOUBLE);
+            yt=new MWNumericArray(Double.valueOf(yf1),MWClassID.DOUBLE);
+            yb=new MWNumericArray(Double.valueOf(yf2),MWClassID.DOUBLE);
+            c = new MWCharArray(imagePath);
+            c2=new MWCharArray(name);
+            fat=new Fat();
+            result=fat.FAT(1,c,c2,xl,xr,yt,yb);
+            System.out.println(result[0]);
+            File f=new File(result[0].toString());
             str="imageResults/"+f.getName();
             File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
             File move=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");

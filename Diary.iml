@@ -52,5 +52,6 @@
     <orderEntry type="library" name="MY_ULTRASONIC" level="project" />
     <orderEntry type="library" name="dicom2jpg" level="project" />
     <orderEntry type="library" name="MY_MAIN_LFPA" level="project" />
+    <orderEntry type="library" name="FAT" level="project" />
   </component>
 </module>

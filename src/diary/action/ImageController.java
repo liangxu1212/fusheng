@@ -3,6 +3,7 @@ package diary.action;
 import MY_ULTRASONIC.Ultrasonic;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.jersey.core.util.Base64;
 import diary.bean.Images;
 import diary.dao.ImageDao;
 import diary.util.UltrasonicUtil;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
 /**
  * Created by MSI on 2017/11/12.
@@ -31,6 +33,14 @@ public class ImageController {
     @RequestMapping(value="/clean",method = RequestMethod.POST)
     public void clean (HttpServletRequest request,HttpServletResponse response) throws IOException {
         imageDao.deleteAll();
+        File[] storage=new File("D:/apache-tomcat-7.0.75-sota/webapps/frontend/imageStorage").listFiles();
+        File[] results=new File("D:/apache-tomcat-7.0.75-sota/webapps/frontend/imageResults").listFiles();
+        for(File f:storage){
+            if(f.getName().endsWith(".jpg")||f.getName().endsWith(".dcm"))f.delete();
+        }
+        for(File f:results){
+            if(f.getName().endsWith(".jpg"))f.delete();
+        }
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("status",200);
         PrintWriter writer=response.getWriter();
@@ -48,14 +58,22 @@ public class ImageController {
         PrintWriter writer=response.getWriter();
         JSONObject jsonObject=new JSONObject();
         Images origin=imageDao.findImageByUrl(imageUrl);
-        if(origin!=null||imageUrl==null||tumourUrl==null||fatUrl==null||ultrasonicResult==null||tumourResult==null||theriomaResult==null){
+        if(imageUrl==null||tumourUrl==null||fatUrl==null||ultrasonicResult==null||tumourResult==null||theriomaResult==null){
             jsonObject.put("status",400);
             writer.write(jsonObject.toJSONString());
             writer.flush();
             return;
         }
-        Images images=new Images(imageUrl,tumourUrl,fatUrl,ultrasonicResult,tumourResult,theriomaResult);
-        imageDao.addImages(images);
+        Images images;
+        if(origin==null){
+            images=new Images(imageUrl,tumourUrl,fatUrl,ultrasonicResult,tumourResult,theriomaResult);
+        }else{
+            images=origin;
+            images.setImageUrl(imageUrl);images.setTumourUrl(tumourUrl);images.setFatUrl(fatUrl);
+            images.setUltrasonicResult(ultrasonicResult);images.setTumourResult(tumourResult);images.setTheriomaResult(theriomaResult);
+        }
+
+        imageDao.updateImages(images);
         jsonObject.put("status",200);
         writer.write(jsonObject.toJSONString());
         writer.flush();
@@ -188,28 +206,101 @@ public class ImageController {
     }
     @RequestMapping(value="/autoseg",method=RequestMethod.POST)
     public void autoseg(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        PrintWriter writer=response.getWriter();
+        //PrintWriter writer=response.getWriter();
         String imagePath=request.getParameter("image_path");
         String x1=request.getParameter("x1");String x2=request.getParameter("x2");
         String x3=request.getParameter("x3");String x4=request.getParameter("x4");
         String y1=request.getParameter("y1");String y2=request.getParameter("y2");
         String y3=request.getParameter("y3");String y4=request.getParameter("y4");
         JSONObject jsonObject=new JSONObject();
-        if(imagePath==null||imagePath==""||x1==null||x1==""||x2==null||x2==""||x3==null||x3==""||x4==null||x4==""
-                ||y1==null||y1==""||y2==null||y2==""||y3==null||y3==""||y4==null||y4==""){
-            jsonObject.put("status",400);
-            writer.write((jsonObject.toJSONString()));
-            writer.flush();
-            return;
-        }
+//        if(imagePath==null||imagePath==""||x1==null||x1==""||x2==null||x2==""||x3==null||x3==""||x4==null||x4==""
+//                ||y1==null||y1==""||y2==null||y2==""||y3==null||y3==""||y4==null||y4==""){
+//            jsonObject.put("status",400);
+//            writer.write((jsonObject.toJSONString()));
+//            writer.flush();
+//            return;
+//        }
         imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
         File f=new File(imagePath);
         String name=f.getName();
         jsonObject.put("status",200);
         String result= UltrasonicUtil.autoseg(imagePath,name,x1,x2,x3,x4,y1,y2,y3,y4);
         jsonObject.put("auto_seg",result);
+//        writer.write(jsonObject.toJSONString());
+//        writer.flush();
+        byte[] data=image2byte("D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+result);
+        data=Base64.encode(data);
+        response.getOutputStream().write(data);
+        response.getOutputStream().flush();
+    }
+    @RequestMapping(value="/fatseg",method=RequestMethod.POST)
+    public void fatseg(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        //PrintWriter writer=response.getWriter();
+
+        String imagePath=request.getParameter("image_path");
+        String xf1=request.getParameter("xf1");String xf2=request.getParameter("xf2");
+        String yf1=request.getParameter("yf1");String yf2=request.getParameter("yf2");
+        JSONObject jsonObject=new JSONObject();
+//        if(imagePath==null||imagePath==""||xf1==null||xf1==""||xf2==null||xf2==""||yf1==null||yf1==""||yf2==null||yf2==""){
+//            jsonObject.put("status",400);
+//            writer.write((jsonObject.toJSONString()));
+//            writer.flush();
+//            return;
+//        }
+        imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
+        File f=new File(imagePath);
+        String name=f.getName();
+        jsonObject.put("status",200);
+        String result= UltrasonicUtil.fatseg(imagePath,name,xf1,xf2,yf1,yf2);
+
+        jsonObject.put("fat_seg",result);
+
+//        writer.write(jsonObject.toJSONString());
+//        writer.flush();
+        response.setContentType("image/jpeg");
+        //response.setHeader("Content-Type","image/jpeg");
+         byte[] data=image2byte("D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+result);
+        data=Base64.encode(data);
+        response.getOutputStream().write(data);
+        response.getOutputStream().flush();
+    }
+    @RequestMapping(value="/newpic",method=RequestMethod.POST)
+    public void newpic(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        PrintWriter writer=response.getWriter();
+        String imagePath=request.getParameter("image_path");
+        JSONObject jsonObject=new JSONObject();
+        if(imagePath==null||imagePath==""){
+            jsonObject.put("status",400);
+            writer.write((jsonObject.toJSONString()));
+            writer.flush();
+            return;
+        }
+        jsonObject.put("status",200);
+        UltrasonicUtil.newpic(imagePath);
         writer.write(jsonObject.toJSONString());
         writer.flush();
     }
-
+    public byte[] image2byte(String path){
+        byte[] data = null;
+        FileImageInputStream input = null;
+        try {
+            input = new FileImageInputStream(new File(path));
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            int numBytesRead = 0;
+            while ((numBytesRead = input.read(buf)) != -1) {
+                output.write(buf, 0, numBytesRead);
+            }
+            data = output.toByteArray();
+            output.close();
+            input.close();
+        }
+        catch (FileNotFoundException ex1) {
+            ex1.printStackTrace();
+        }
+        catch (IOException ex1) {
+            ex1.printStackTrace();
+        }
+        return data;
+    }
 }
