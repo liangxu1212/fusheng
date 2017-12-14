@@ -33,7 +33,7 @@ public class UploadController {
         String filename=new File(request.getParameter("filename")).getName();
         System.out.println(filename);
         if(filename.endsWith(".dcm")){
-            File f=new File("D:/apache-tomcat-7.0.75-sota/webapps/frontend/imageStorage/"+filename);
+            File f=new File("c:/apache-tomcat-7.0.75-sota/webapps/frontend/imageStorage/"+filename);
             file.transferTo(f);
             jsonObject.put("status",200);
             jsonObject.put("path",f.getAbsolutePath());

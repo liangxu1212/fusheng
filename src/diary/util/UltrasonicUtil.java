@@ -1,7 +1,7 @@
 package diary.util;
 
 import FAT.Fat;
-import MY_MAIN_LFPA.AutoSeg;
+import MY_MAIN_LFPA.Autoseg;
 import com.alibaba.fastjson.JSONArray;
 import com.mathworks.toolbox.javabuilder.MWCharArray;
 import com.mathworks.toolbox.javabuilder.MWClassID;
@@ -42,8 +42,8 @@ public class UltrasonicUtil {
             System.out.println(result[0]);
             System.out.println(result[1]);
             System.out.println(result[2]);
-            File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
-            File move=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
+            File origin=new File("c:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
+            File move=new File("c:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
             File[] files=origin.listFiles();
             for(File img:files){
                 moveFile(img.getAbsolutePath(),move.getAbsolutePath()+"\\"+img.getName());
@@ -52,12 +52,16 @@ public class UltrasonicUtil {
 // TODO: handle exception
             System.out.println("Exception! "+e.toString());
             e.printStackTrace();
+        }finally{
+            a.dispose();b.dispose();c.dispose();c2.dispose();
+            m.dispose();n.dispose();p.dispose();q.dispose();
+            ultrasonic.dispose();
         }
         return result;
     }
     public static JSONArray dcm2jpg() {
         JSONArray array=new JSONArray();
-        String storage="D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage";
+        String storage="c:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageStorage";
         File path=new File(storage);
         File[] pics=path.listFiles();
         for(File img:pics){
@@ -82,6 +86,8 @@ public class UltrasonicUtil {
             dcm2jpg.dicom2jpg(c,c2);
         } catch (MWException e) {
             e.printStackTrace();
+        }finally{
+            c.dispose();c2.dispose();dcm2jpg.dispose();
         }
     }
     /**
@@ -151,7 +157,7 @@ public class UltrasonicUtil {
         MWNumericArray b = null;
         MWCharArray c = null;MWCharArray c2 = null;
         Object[] result= null;
-        AutoSeg autoSeg=null;
+        Autoseg autoSeg=null;
         try{
             double[] aaa={Double.valueOf(x1),Double.valueOf(x2),Double.valueOf(x3),Double.valueOf(x4)};
             double[] bbb={Double.valueOf(y1),Double.valueOf(y2),Double.valueOf(y3),Double.valueOf(y4)};
@@ -162,13 +168,13 @@ public class UltrasonicUtil {
             b = new MWNumericArray(bbb, MWClassID.DOUBLE);
             c = new MWCharArray(imagePath);
             c2=new MWCharArray(name);
-            autoSeg=new AutoSeg();
+            autoSeg=new Autoseg();
             result=autoSeg.MY_MAIN_LFPA(4,c,c2,a,b);
             System.out.println(result[3]);
             File f=new File(result[3].toString());
             str="imageResults/"+f.getName();
-            File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
-            File move=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
+            File origin=new File("c:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
+            File move=new File("c:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
             File[] files=origin.listFiles();
             for(File img:files){
                 moveFile(img.getAbsolutePath(),move.getAbsolutePath()+"\\"+img.getName());
@@ -177,6 +183,8 @@ public class UltrasonicUtil {
 // TODO: handle exception
             System.out.println("Exception! "+e.toString());
             e.printStackTrace();
+        }finally {
+            a.dispose();b.dispose();c.dispose();c2.dispose();autoSeg.dispose();
         }
         return str;
     }
@@ -202,8 +210,8 @@ public class UltrasonicUtil {
             System.out.println(result[0]);
             File f=new File(result[0].toString());
             str="imageResults/"+f.getName();
-            File origin=new File("D:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
-            File move=new File("D:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
+            File origin=new File("c:\\apache-tomcat-7.0.75-sota\\bin\\finalimg");
+            File move=new File("c:\\apache-tomcat-7.0.75-sota\\webapps\\frontend\\imageResults");
             File[] files=origin.listFiles();
             for(File img:files){
                 moveFile(img.getAbsolutePath(),move.getAbsolutePath()+"\\"+img.getName());
@@ -212,6 +220,8 @@ public class UltrasonicUtil {
 // TODO: handle exception
             System.out.println("Exception! "+e.toString());
             e.printStackTrace();
+        }finally{
+            xl.dispose();xr.dispose();yt.dispose();yb.dispose();c.dispose();c2.dispose();fat.dispose();
         }
         return str;
     }

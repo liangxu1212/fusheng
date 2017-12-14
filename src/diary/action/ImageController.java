@@ -33,8 +33,8 @@ public class ImageController {
     @RequestMapping(value="/clean",method = RequestMethod.POST)
     public void clean (HttpServletRequest request,HttpServletResponse response) throws IOException {
         imageDao.deleteAll();
-        File[] storage=new File("D:/apache-tomcat-7.0.75-sota/webapps/frontend/imageStorage").listFiles();
-        File[] results=new File("D:/apache-tomcat-7.0.75-sota/webapps/frontend/imageResults").listFiles();
+        File[] storage=new File("c:/apache-tomcat-7.0.75-sota/webapps/frontend/imageStorage").listFiles();
+        File[] results=new File("c:/apache-tomcat-7.0.75-sota/webapps/frontend/imageResults").listFiles();
         for(File f:storage){
             if(f.getName().endsWith(".jpg")||f.getName().endsWith(".dcm"))f.delete();
         }
@@ -135,7 +135,7 @@ public class ImageController {
     }
     @RequestMapping(value="/listen",method= RequestMethod.POST)
     public void listen(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String shell = "cmd /c start D:\\apache-tomcat-7.0.75-sota\\webapps\\backend\\FolderListener.exe";
+        String shell = "cmd /c start c:\\apache-tomcat-7.0.75-sota\\webapps\\backend\\FolderListener.exe";
         try {
             Process p=Runtime.getRuntime().exec(shell);
         } catch (IOException e) {
@@ -191,7 +191,7 @@ public class ImageController {
             writer.flush();
             return;
         }
-        imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
+        imagePath="c:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
         File f=new File(imagePath);
         String name=f.getName();
         jsonObject.put("status",200);
@@ -220,7 +220,7 @@ public class ImageController {
 //            writer.flush();
 //            return;
 //        }
-        imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
+        imagePath="c:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
         File f=new File(imagePath);
         String name=f.getName();
         jsonObject.put("status",200);
@@ -228,7 +228,7 @@ public class ImageController {
         jsonObject.put("auto_seg",result);
 //        writer.write(jsonObject.toJSONString());
 //        writer.flush();
-        byte[] data=image2byte("D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+result);
+        byte[] data=image2byte("c:/apache-tomcat-7.0.75-sota/webapps/frontend/"+result);
         data=Base64.encode(data);
         response.getOutputStream().write(data);
         response.getOutputStream().flush();
@@ -247,7 +247,7 @@ public class ImageController {
 //            writer.flush();
 //            return;
 //        }
-        imagePath="D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
+        imagePath="c:/apache-tomcat-7.0.75-sota/webapps/frontend/"+imagePath.substring(0,13)+imagePath.substring(17,imagePath.length()-4);
         File f=new File(imagePath);
         String name=f.getName();
         jsonObject.put("status",200);
@@ -259,7 +259,7 @@ public class ImageController {
 //        writer.flush();
         response.setContentType("image/jpeg");
         //response.setHeader("Content-Type","image/jpeg");
-         byte[] data=image2byte("D:/apache-tomcat-7.0.75-sota/webapps/frontend/"+result);
+         byte[] data=image2byte("c:/apache-tomcat-7.0.75-sota/webapps/frontend/"+result);
         data=Base64.encode(data);
         response.getOutputStream().write(data);
         response.getOutputStream().flush();
