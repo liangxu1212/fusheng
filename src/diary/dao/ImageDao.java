@@ -38,7 +38,7 @@ public class ImageDao {
         q.executeUpdate();
     }
     public Images findImageByUrl(String url){
-        String hql="from Images where imageUrl='"+url+"'";
+        String hql="from Images where imageUrl='"+url+"'";//image_url Hql:imageUrl
         Query q=getSession().createQuery(hql);
         return (Images) q.uniqueResult();
     }

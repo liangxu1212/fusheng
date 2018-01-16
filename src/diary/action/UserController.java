@@ -1,12 +1,8 @@
 package diary.action;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import diary.bean.User;
 import diary.dao.UserDao;
-import diary.util.Encoder;
 import diary.util.MyJSON;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/user")

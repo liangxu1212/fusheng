@@ -3,27 +3,26 @@ package diary.bean;
 import javax.persistence.*;
 
 /**
- * Created by MSI on 2017/11/4.
+ * Created by MSI on 2017/12/14.
  */
 @Entity
 @Table(name="user")
 public class User {
-    private int idUser;
+    private Integer idUser;
     private String account;
     private String password;
-
     @Id
-    @Column(name = "idUser")
-    public int getIdUser() {
+    @Column(name = "idUser", nullable = true)
+    public Integer getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
 
     @Basic
-    @Column(name = "account")
+    @Column(name = "account", nullable = true, length = 100)
     public String getAccount() {
         return account;
     }
@@ -33,7 +32,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "password")
+    @Column(name = "password", nullable = true, length = 100)
     public String getPassword() {
         return password;
     }
@@ -49,7 +48,7 @@ public class User {
 
         User user = (User) o;
 
-        if (idUser != user.idUser) return false;
+        if (idUser != null ? !idUser.equals(user.idUser) : user.idUser != null) return false;
         if (account != null ? !account.equals(user.account) : user.account != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
 
@@ -58,7 +57,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = idUser;
+        int result = idUser != null ? idUser.hashCode() : 0;
         result = 31 * result + (account != null ? account.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
