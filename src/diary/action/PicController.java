@@ -22,11 +22,11 @@ import java.util.HashSet;
 public class PicController {
     @RequestMapping(params = "method=computePics", method = RequestMethod.POST)
     public void computePics(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String shell = "cmd /c start python d:\\fusheng\\test\\deploy_interface.py d:\\fusheng\\pics";//需要执行的命令
+        String shell = "cmd /c start python /home/jindiwei/Changhai/deploy_interface.py /home/jindiwei/Changhai/pics";//需要执行的命令
         try {
-            File flag=new File("flag.txt");
+            File flag=new File("/home/jindiwei/Changhai/flag.txt");
             if(flag.exists())flag.delete();
-            File f=new File("result.txt");
+            File f=new File("/home/jindiwei/Changhai/result.txt");
             f.delete();
             f.createNewFile();
             Process p = Runtime.getRuntime().exec(shell);//调用控制台执行shell
@@ -43,7 +43,7 @@ public class PicController {
     public void getPicsResult(HttpServletRequest request,HttpServletResponse response) throws IOException {
         JSONObject myJSON=new JSONObject();
         PrintWriter writer=response.getWriter();
-        File flag=new File("flag.txt");
+        File flag=new File("/home/jindiwei/Changhai/flag.txt");
         if(flag.exists()){
             HashMap<Integer,Integer> results=new HashMap<>();
             try {
