@@ -50,14 +50,13 @@ public class PicController {
                 BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File("result.txt")),
                         "UTF-8"));
                 String lineTxt = null;
+                int count=0;
                 while ((lineTxt = br.readLine()) != null) {
                     int num,result;
+                    count++;
                     String[] temp=lineTxt.split("\\|:\\|");
                     result=Integer.parseInt(temp[1]);
-                    temp=temp[0].split("videopics");
-                    temp=temp[1].split("\\.");
-                    num=Integer.parseInt(temp[0]);
-                    results.put(num,result);
+                    results.put(count,result);
                 }
                 br.close();
                 JSONArray array=new JSONArray();
